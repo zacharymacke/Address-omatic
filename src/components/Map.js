@@ -43,13 +43,11 @@ class MapWrapper extends React.Component{
       addressComponents: results[0]}, 
       function() {console.log(this.state.addressComponents)}
     ))
-    cords.then(function(value){
-      this.setState({
+    cords.then(fetchedCords => this.setState({
         address: shortAddress,
-
-
-      })
-    })
+        lat: fetchedCords['lat'],
+        lon: fetchedCords['lng'],
+    }))
   }
 
   render (){
