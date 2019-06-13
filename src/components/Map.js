@@ -1,7 +1,9 @@
+/* eslint react/prop-types: 0 */
 import React from "react";
 import {Marker, withScriptjs, withGoogleMap, GoogleMap} from "react-google-maps";
 import LocationSearchInput from './LocationSearchInput.js'
 import getLatLng from 'react-places-autocomplete'
+
 
 const Map = withScriptjs(withGoogleMap((props) =>{
   return (
@@ -11,20 +13,17 @@ const Map = withScriptjs(withGoogleMap((props) =>{
         center={ 
           { lat: props.lat, 
             lng: props.lon, 
-          } 
-        }
-        >
+          }}>
         <Marker
-          position={
-            { lat: props.lat, 
-              lng: props.lon, 
-            }}
-        />
+          position={{ 
+            lat: props.lat, 
+            lng: props.lon}}/>
       </GoogleMap>
     </div>
     );
   }
 ))
+
 
 class MapWrapper extends React.Component{
   constructor(props){
@@ -33,15 +32,14 @@ class MapWrapper extends React.Component{
       lat: 40.7128,
       lon:-74.0060,
       address: '',
-      addressComponents: []
+      addressComponents: [],
     }
     this.updateAddress = this.updateAddress.bind(this)
   }
 
   updateAddress = (shortAddress, longAddress, cords)=> {
     longAddress.then(results => this.setState({
-      addressComponents: results[0]}, 
-      function() {console.log(this.state.addressComponents)}
+      addressComponents: results[0]}
     ))
     cords.then(fetchedCords => this.setState({
         address: shortAddress,
@@ -62,8 +60,26 @@ class MapWrapper extends React.Component{
           lon={this.state.lon}
         />
         <LocationSearchInput callBack={this.updateAddress}/>
+        <AddressField address={this.state.addressComponents}/>
       </div>
     )
+  }
+}
+
+
+class AddressField extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+  console.log(this.props)
+    return (
+      <div className="">
+        <h1>
+          {this.props.addressComponents}
+        </h1>
+      </div>
+    );
   }
 }
 
