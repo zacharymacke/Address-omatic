@@ -3,6 +3,8 @@ import React from "react";
 import {Marker, withScriptjs, withGoogleMap, GoogleMap} from "react-google-maps";
 import LocationSearchInput from './LocationSearchInput.js'
 import getLatLng from 'react-places-autocomplete'
+import AddressField from './AddressField.js';
+import '../styles/map.css';
 
 
 const Map = withScriptjs(withGoogleMap((props) =>{
@@ -14,10 +16,7 @@ const Map = withScriptjs(withGoogleMap((props) =>{
           { lat: props.lat, 
             lng: props.lon, 
           }}>
-        <Marker
-          position={{ 
-            lat: props.lat, 
-            lng: props.lon}}/>
+        {props.isMarkerShown && <Marker position={{ lat: props.lat, lng:props.lon }} onClick={props.onMarkerClick} />}
       </GoogleMap>
     </div>
     );
@@ -33,6 +32,7 @@ class MapWrapper extends React.Component{
       lon:-74.0060,
       address: '',
       addressComponents: [],
+      isMarkerShown: false,
     }
     this.updateAddress = this.updateAddress.bind(this)
   }
@@ -48,40 +48,48 @@ class MapWrapper extends React.Component{
     }))
   }
 
+    componentDidMount() {
+    this.delayedShowMarker()
+  }
+
+  delayedShowMarker = () => {
+    setTimeout(() => {
+      this.setState({ isMarkerShown: true })
+    }, 3000)
+  }
+
+  handleMarkerClick = () => {
+    this.setState({ isMarkerShown: false })
+    this.delayedShowMarker()
+  }
+
+
   render (){
     return(
-      <div>
+      <React.Fragment>
+        <div className="titleBar">
+          <h1 className="title">address-o-matic</h1>
+        </div>
+      <div className="mapContainer">
         <Map
           googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHjH4Ffk9ErA78BfBkzKlO1K-JfWdcRXc&v=3.exp&libraries=geometry,drawing,places"
           loadingElement={<div style={{ height: `100%` }} />}
-          containerElement={<div style={{ height: `400px` }} />}
-          mapElement={<div style={{ height: `100%` }} />}
+          containerElement={<div className="maptest" style={{ height: `450px` }} />}
+          mapElement={<div className='mapElement' style={{ height: `100%` }} />}
           lat={this.state.lat}
           lon={this.state.lon}
+          isMarkerShown={this.state.isMarkerShown}
+          onMarkerClick={this.handleMarkerClick}
         />
-        <LocationSearchInput callBack={this.updateAddress}/>
+        <LocationSearchInput 
+          callBack={this.updateAddress}
+          className="locationInput"
+        />
         <AddressField address={this.state.addressComponents}/>
       </div>
+    </React.Fragment>
     )
   }
 }
-
-
-class AddressField extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-  render() {
-  console.log(this.props)
-    return (
-      <div className="">
-        <h1>
-          {this.props.addressComponents}
-        </h1>
-      </div>
-    );
-  }
-}
-
 
 export default MapWrapper;

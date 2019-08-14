@@ -7,6 +7,7 @@ import {
   getLatLng,
 } from 'react-places-autocomplete';
 import MapWrapper from './Map.js'
+import '../styles/search.scss'
 
 class LocationSearchInput extends React.Component {
   constructor(props) {
@@ -33,28 +34,32 @@ class LocationSearchInput extends React.Component {
       >
         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
           <div>
-            <input
-              {...getInputProps({
-                placeholder: 'Search Places ...',
-                className: 'location-search-input',
-              })}
-            />
+
+            <div className="container">
+              <div className="container__item">
+                <form className="form">
+                  <input
+                    {...getInputProps({
+                      placeholder: 'Where would you like to send?',
+                      className: 'form__field',
+                    })}
+                  />
+                  <button 
+                    type='button'
+                    className="btn btn--primary btn--inside uppercase"
+                  >Seach</button>
+                </form>
+            </div>
+          </div>
+
             <div className="autocomplete-dropdown-container">
               {loading && <div>Loading...</div>}
               {suggestions.map(suggestion => {
-                const className = suggestion.active
-                  ? 'suggestion-item--active'
-                  : 'suggestion-item';
-                // inline style for demonstration purpose
-                const style = suggestion.active
-                  ? { backgroundColor: '#fafafa', cursor: 'pointer' }
-                  : { backgroundColor: '#ffffff', cursor: 'pointer' };
                 return (
                   <div
                     key
                     {...getSuggestionItemProps(suggestion, {
-                      className,
-                      style,
+                      className: 'suggestion-item'
                     })}
                   >
                     <span>{suggestion.description}</span>
@@ -62,6 +67,7 @@ class LocationSearchInput extends React.Component {
                 );
               })}
             </div>
+
           </div>
         )}
       </PlacesAutocomplete>

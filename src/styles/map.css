@@ -1,0 +1,26 @@
+.mapContainer{
+  width: 700px;
+  margin:0 auto;
+}
+
+.titleBar{
+  margin:0 auto;
+  height:110px;
+}
+
+.title{
+  margin: 0 auto;
+  text-align: center;
+  padding-top: 40px;
+}
+
+.location-search-input{
+  width:100px;
+  height: 20px;
+  display: block;
+  margin: 0 auto;
+}
+
+.mapElement{
+  border-radius:10px;
+}
