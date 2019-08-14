@@ -5,4 +5,5 @@
 
 ## Demo
 
+![Demo](demo.gif)
 
